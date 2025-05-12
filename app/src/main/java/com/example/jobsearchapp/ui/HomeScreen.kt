@@ -29,6 +29,7 @@ import com.example.jobsearchapp.AppViewModel
 import com.example.jobsearchapp.R
 import com.example.jobsearchapp.model.Job
 import com.example.jobsearchapp.model.JobCategory
+import com.example.jobsearchapp.ui.profile.LogoutBottomSheet
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,6 +43,7 @@ fun HomeScreen(
     var searchQuery by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf("All") }
     var selectedJobType by remember { mutableStateOf("All") }
+    var showLogoutDialog by remember { mutableStateOf(false) }
 
     // Dropdown menu states
     var showCategoryDropdown by remember { mutableStateOf(false) }
@@ -154,9 +156,10 @@ fun HomeScreen(
                         Icon(Icons.Default.ColorLens, contentDescription = "Change Theme")
                     }
                     IconButton(
-                            onClick = {
-                                onLogout()
-                            }
+//                            onClick = {
+//                                onLogout()
+//                            }
+                        onClick = { showLogoutDialog = true }
 
                     ) {
                         Icon(Icons.Default.ExitToApp, contentDescription = "Logout")
@@ -355,6 +358,18 @@ fun HomeScreen(
                 }
             }
         }
+    }
+    if (showLogoutDialog) {
+        // Use the existing LogoutBottomSheet from DialogScreen.kt
+        LogoutBottomSheet(
+            onDismissRequest = {
+                showLogoutDialog = false
+            },
+            onLogoutConfirmed = {
+                onLogout()
+                showLogoutDialog = false
+            }
+        )
     }
 }
 

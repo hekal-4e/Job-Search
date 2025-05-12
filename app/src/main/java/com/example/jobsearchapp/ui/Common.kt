@@ -3,9 +3,14 @@ package com.example.jobsearchapp.ui
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
@@ -40,10 +45,19 @@ fun AnimatedButton(
                 isPressed = true
                 onClick()
             },
-            modifier = buttonModifier,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF1E275B),
+                contentColor = Color.White
+            ),
+            shape = RoundedCornerShape(8.dp),
+            modifier = buttonModifier
+                .fillMaxWidth()
+                .height(48.dp)
+                .padding(horizontal = 16.dp),
             enabled = enabled,
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-            content = content
+            content = content,
+
         )
     } else {
         Button(
@@ -51,7 +65,15 @@ fun AnimatedButton(
                 isPressed = true
                 onClick()
             },
-            modifier = buttonModifier,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF1E275B),
+                contentColor = Color.White
+            ),
+            shape = RoundedCornerShape(8.dp),
+            modifier = buttonModifier
+                .fillMaxWidth()
+                .height(48.dp)
+                .padding(horizontal = 16.dp),
             enabled = enabled,
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
             content = content

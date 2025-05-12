@@ -1,6 +1,7 @@
     package com.example.jobsearchapp.ui
 
     import androidx.compose.material.icons.Icons
+    import androidx.compose.material.icons.filled.Archive
     import androidx.compose.material.icons.filled.Description
     import androidx.compose.material.icons.filled.Home
     import androidx.compose.material.icons.filled.Person
@@ -20,8 +21,9 @@
             BottomNavItem("Home", Icons.Default.Home, "home"),
             BottomNavItem("Saved", Icons.Default.Star, "savedJobs"),
             BottomNavItem("Applications", Icons.Default.Description, "myApplications"),
-            BottomNavItem("proposals", Icons.Default.Person, "poster"),
-                    BottomNavItem("profile", Icons.Default.Person, "profile")
+            // it named "Proposals"
+            BottomNavItem("Post Job", Icons.Default.Archive, "poster"),
+                    BottomNavItem("Profile", Icons.Default.Person, "profile")
 
 
         )

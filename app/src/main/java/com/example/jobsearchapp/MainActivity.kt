@@ -70,6 +70,7 @@ import kotlin.math.sin
 import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
+
     companion object {
         const val PREFS_NAME = "JobSearchAppPrefs"
         const val KEY_IS_LOGGED_IN = "isLoggedIn"
@@ -117,6 +118,7 @@ class MainActivity : ComponentActivity() {
                 // Track previous and current routes for animation
                 val previousRoute = remember { mutableStateOf<String?>(null) }
                 val currentRouteState = remember { mutableStateOf<String?>(null) }
+
 
                 // Update route states for transition
                 LaunchedEffect(currentRoute) {
@@ -395,7 +397,23 @@ class MainActivity : ComponentActivity() {
                                     }
                                 }
                                 composable("settings") {
-                                    SettingsScreen(navController = navController)
+                                    SettingsScreen(
+                                        navController = navController,
+                                        onLogout = {
+                                            // Perform logout
+                                            authViewModel.signout()
+                                            // Navigate to welcome screen
+                                            navController.navigate("welcome") {
+                                                popUpTo(navController.graph.id) { inclusive = true }
+                                            }
+                                        },
+                                        onUpdatePassword = {
+                                            authViewModel.resetPassword(
+                                                email = authViewModel.getCurrentUserEmail()
+                                            )
+                                        }
+
+                                    )
                                 }
                                 composable("add_work_experience") {
                                     val profileViewModel: ProfileViewModel = viewModel()

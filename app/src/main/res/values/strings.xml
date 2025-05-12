@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Job Search App</string>
+    <string name="app_name">JobVerse</string>
     <string name="search_jobs_hint">Search jobs…</string>
     <string name="filter_jobs_title">Filter Jobs</string>
     <string name="filter_options_placeholder">Filter options coming soon…</string>

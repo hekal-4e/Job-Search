@@ -55,10 +55,13 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.jobsearchapp.UserProfile
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import com.example.jobsearchapp.WorkExperience
+import com.example.jobsearchapp.R
 import com.example.jobsearchapp.util.ImageUploadHelper
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -561,6 +564,18 @@ fun ProfileHeaderWithPictureChange(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(160.dp)
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.img_1),
+                contentDescription = "Cover Photo",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
         // Profile Image with change button
         Box(
             modifier = Modifier
@@ -613,6 +628,7 @@ fun ProfileHeaderWithPictureChange(
         Text(
             text = "${userProfile.firstName ?: ""} ${userProfile.lastName ?: ""}",
             style = MaterialTheme.typography.headlineMedium,
+            color = MaterialTheme.colorScheme.onPrimary,
             fontWeight = FontWeight.Bold
         )
 

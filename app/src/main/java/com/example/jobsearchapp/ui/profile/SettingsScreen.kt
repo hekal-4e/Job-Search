@@ -27,11 +27,16 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 
 @Composable
-fun SettingsScreen(navController: NavHostController) {
+fun SettingsScreen(
+    navController: NavHostController,
+    onLogout: () -> Unit,
+    onUpdatePassword: () -> Unit
+) {
     var notificationsEnabled by remember { mutableStateOf(true) }
     var darkModeEnabled by remember { mutableStateOf(false) }
     var showUpdatePassword by remember { mutableStateOf(false) }
     var showLogoutDialog by remember { mutableStateOf(false) }
+    var showUpdatePasswordDialog by remember { mutableStateOf(false) }
 
     if (showUpdatePassword) {
         // Use the existing UpdatePasswordScreen from UpdatePasswordScreen.kt
@@ -89,7 +94,7 @@ fun SettingsScreen(navController: NavHostController) {
                 title = "Password",
                 icon = Icons.Filled.Password,
                 showSwitch = false,
-                onClick = { showUpdatePassword = true }
+                onClick = { showUpdatePasswordDialog = true }
             )
             TabRowDefaults.Divider(
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f),
@@ -131,8 +136,17 @@ fun SettingsScreen(navController: NavHostController) {
                     showLogoutDialog = false
                 },
                 onLogoutConfirmed = {
-                    println("User logged out")
+                    onLogout()
                     showLogoutDialog = false
+                }
+            )
+        }
+        if(showUpdatePasswordDialog) {
+            UpdatePasswordBottomSheet(
+                onDismissRequest = { showUpdatePasswordDialog = false },
+                onConfirmed = {
+
+                    showUpdatePasswordDialog = false
                 }
             )
         }
