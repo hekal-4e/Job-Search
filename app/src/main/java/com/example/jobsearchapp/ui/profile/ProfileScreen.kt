@@ -558,27 +558,84 @@ fun ProfileHeaderWithPictureChange(
     onEditClick: () -> Unit,
     onChangeProfilePicture: () -> Unit
 ) {
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box(
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(160.dp)
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.img_1),
-                contentDescription = "Cover Photo",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize()
+            // Cover Photo
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(160.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.img_1),
+                    contentDescription = "Cover Photo",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+
+            // Space for the half of profile picture that will extend below cover
+            Spacer(modifier = Modifier.height(60.dp))
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Name
+            Text(
+                text = "${userProfile.firstName ?: ""} ${userProfile.lastName ?: ""}",
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+                fontWeight = FontWeight.Bold
             )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            // Job Title
+            Text(
+                text = userProfile.jobTitle ?: "No job title",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            // Location
+            Text(
+                text = userProfile.location ?: "No location",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Edit Profile Button
+            Button(
+                onClick = onEditClick,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF1E0F5C),
+                    contentColor = Color.White
+                ),
+                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                    .height(48.dp)
+                    .padding(horizontal = 16.dp)
+            ) {
+                Text("Edit Basic Info")
+            }
         }
-        // Profile Image with change button
+
+        // Profile Image with change button - positioned to overlay both cover and content
         Box(
             modifier = Modifier
+                .align(Alignment.TopCenter)
+                .offset(y = 100.dp)  // This positions it to cross the boundary
                 .size(120.dp)
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.surfaceVariant)
@@ -620,52 +677,6 @@ fun ProfileHeaderWithPictureChange(
                     modifier = Modifier.size(20.dp)
                 )
             }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Name
-        Text(
-            text = "${userProfile.firstName ?: ""} ${userProfile.lastName ?: ""}",
-            style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.onPrimary,
-            fontWeight = FontWeight.Bold
-        )
-
-        Spacer(modifier = Modifier.height(4.dp))
-
-        // Job Title
-        Text(
-            text = userProfile.jobTitle ?: "No job title",
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-
-        Spacer(modifier = Modifier.height(4.dp))
-
-        // Location
-        Text(
-            text = userProfile.location ?: "No location",
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Edit Profile Button
-        Button(
-            onClick = onEditClick,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF1E0F5C),
-                contentColor = Color.White
-            ),
-            shape = RoundedCornerShape(8.dp),
-            modifier = Modifier
-                .fillMaxWidth(0.9f)
-                .height(48.dp)
-                .padding(horizontal = 16.dp)
-        ) {
-            Text("Edit Basic Info")
         }
     }
 }
