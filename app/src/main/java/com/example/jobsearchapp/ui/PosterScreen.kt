@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -15,6 +16,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.jobsearchapp.AppViewModel
 import com.example.jobsearchapp.model.JobCategory
@@ -69,7 +71,15 @@ fun PosterScreen(
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         Button(
-                            onClick = { navController.navigate("addJob") }
+                            onClick = { navController.navigate("addJob") },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFF1E275B),
+                                contentColor = Color.White
+                            ),
+                            shape = RoundedCornerShape(8.dp),
+                            modifier = Modifier
+                                .height(48.dp)
+                                .padding(horizontal = 16.dp)
                         ) {
                             Text("Post Your First Job")
                         }
@@ -340,7 +350,15 @@ fun AddJobDialog(
                         }
                     }
                 },
-                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF1E275B),
+                    contentColor = Color.White
+                ),
+                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(48.dp)
+                    .padding(horizontal = 16.dp),
                 enabled = title.isNotBlank() && company.isNotBlank() && location.isNotBlank() &&
                         description.isNotBlank() && requirements.isNotBlank() && jobType.isNotBlank() &&
                         !isSubmitting

@@ -210,11 +210,10 @@ fun SkillChipWithAddButton(
         onClick = onSkillAdded,
         label = { Text(text = skill) },
         modifier = Modifier
-            .fillMaxWidth()
             .padding(end = 4.dp, bottom = 4.dp),
         shape = RoundedCornerShape(8.dp),
         colors = SuggestionChipDefaults.suggestionChipColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+            containerColor = Color(0xFF1E275B),
             labelColor = MaterialTheme.colorScheme.onSecondaryContainer
         ),
         icon = {

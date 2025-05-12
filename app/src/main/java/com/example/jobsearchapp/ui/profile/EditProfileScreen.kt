@@ -41,7 +41,7 @@ fun FormField(
         Text(
             text = label,
             fontSize = 14.sp,
-            color = Color.Gray,
+            color = Color(0xFF111111),
             modifier = Modifier.padding(start = 4.dp, bottom = 8.dp)
         )
 

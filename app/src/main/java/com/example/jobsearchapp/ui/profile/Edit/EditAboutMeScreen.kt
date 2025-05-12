@@ -90,7 +90,11 @@ fun EditAboutScreen(
                         unfocusedContainerColor = Color.White,
                         disabledContainerColor = Color.White,
                         focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent
+                        unfocusedIndicatorColor = Color.Transparent,
+                        // Set text colors here
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black,
+                        disabledTextColor = Color.Black
                     )
                 )
             }

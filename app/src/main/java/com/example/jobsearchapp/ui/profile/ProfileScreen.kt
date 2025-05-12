@@ -156,6 +156,9 @@ fun ProfileScreen(
                     )
                 },
                 actions = {
+                    IconButton(onClick = {}) {
+                        Icon(Icons.Default.Edit, contentDescription = "Edit")
+                    }
                     IconButton(onClick = { showShareSheet = true }) {
                         Icon(Icons.Default.Share, contentDescription = "Share")
                     }
@@ -250,7 +253,7 @@ fun ProfileScreen(
                     workExperiences = workExperiences,
                     onEditClick = { experienceId ->
                         try {
-                            navController.navigate("change_work_experience/$experienceId")
+                            navController.navigate("change_work_experience")
                         } catch (e: Exception) {
                             Log.e("ProfileScreen", "Navigation error: ${e.message}")
                             Toast.makeText(context, "This feature is coming soon", Toast.LENGTH_SHORT).show()
@@ -615,20 +618,20 @@ fun ProfileHeaderWithPictureChange(
             Spacer(modifier = Modifier.height(16.dp))
 
             // Edit Profile Button
-            Button(
-                onClick = onEditClick,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF1E0F5C),
-                    contentColor = Color.White
-                ),
-                shape = RoundedCornerShape(8.dp),
-                modifier = Modifier
-                    .fillMaxWidth(0.9f)
-                    .height(48.dp)
-                    .padding(horizontal = 16.dp)
-            ) {
-                Text("Edit Basic Info")
-            }
+//            Button(
+//                onClick = onEditClick,
+//                colors = ButtonDefaults.buttonColors(
+//                    containerColor = Color(0xFF1E0F5C),
+//                    contentColor = Color.White
+//                ),
+//                shape = RoundedCornerShape(8.dp),
+//                modifier = Modifier
+//                    .fillMaxWidth(0.9f)
+//                    .height(48.dp)
+//                    .padding(horizontal = 16.dp)
+//            ) {
+//                Text("Edit Basic Info")
+//            }
         }
 
         // Profile Image with change button - positioned to overlay both cover and content
