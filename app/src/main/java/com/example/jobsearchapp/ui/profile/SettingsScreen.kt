@@ -144,8 +144,7 @@ fun SettingsScreen(
         if(showUpdatePasswordDialog) {
             UpdatePasswordBottomSheet(
                 onDismissRequest = { showUpdatePasswordDialog = false },
-                onConfirmed = {
-
+                onUpdatePasswordConfirmed = {
                     showUpdatePasswordDialog = false
                 }
             )
