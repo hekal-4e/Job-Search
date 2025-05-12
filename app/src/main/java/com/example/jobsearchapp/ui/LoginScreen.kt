@@ -1,7 +1,11 @@
 package com.example.jobsearchapp.ui
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -10,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -23,6 +28,7 @@ fun LoginScreen(navController: NavController, viewModel: AuthViewModel = viewMod
     val authState by viewModel.authState.observeAsState()
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var passwordVisible by remember { mutableStateOf(false) }
 
     BackgroundContainer {
         Column(
@@ -56,8 +62,20 @@ fun LoginScreen(navController: NavController, viewModel: AuthViewModel = viewMod
                 onValueChange = { password = it },
                 label = { Text("Password") },
                 modifier = Modifier.fillMaxWidth(),
-                visualTransformation = PasswordVisualTransformation(),
+                visualTransformation = if(passwordVisible) VisualTransformation.None
+                else PasswordVisualTransformation(),
+                trailingIcon = {
+                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                        Icon(
+                            imageVector = if (passwordVisible) Icons.Default.VisibilityOff
+                            else Icons.Default.Visibility,
+                            contentDescription = if (passwordVisible) "Hide password"
+                            else "Show password"
+                        )
+                    }
+                },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+
             )
             Spacer(modifier = Modifier.height(8.dp))
             Row(
@@ -71,6 +89,11 @@ fun LoginScreen(navController: NavController, viewModel: AuthViewModel = viewMod
             Spacer(modifier = Modifier.height(24.dp))
             Button(
                 onClick = { viewModel.login(email, password) },
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF1E0F5C),
+                    contentColor = Color.White
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp)
@@ -86,7 +109,9 @@ fun LoginScreen(navController: NavController, viewModel: AuthViewModel = viewMod
                     .padding(top = 16.dp)
             ) {
                 Text("Don't have an account?", color = Color.White)
-                TextButton(onClick = { navController.navigate("signup") }) {
+                TextButton(
+                    onClick = { navController.navigate("signup") },
+                ) {
                     Text("Sign up", color = Color.LightGray)
                 }
             }

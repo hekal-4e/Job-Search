@@ -50,7 +50,7 @@ fun SettingsScreen(navController: NavHostController) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = "Back",
-                        tint = Color.Gray
+                        tint = Color.White
                     )
                 }
                 Text(

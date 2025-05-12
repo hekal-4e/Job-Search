@@ -95,7 +95,7 @@ fun ProfileHeader(
 
         Box(
             modifier = Modifier
-                .size(120.dp)
+                .size(135.dp)
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.surfaceVariant)
                 .clickable { onChangeProfilePicture() },
@@ -144,17 +144,18 @@ fun ProfileHeader(
         Text(
             text = "${userProfile.firstName ?: ""} ${userProfile.lastName ?: ""}",
             style = MaterialTheme.typography.headlineMedium,
+            color = MaterialTheme.colorScheme.onPrimary,
             fontWeight = FontWeight.Bold
         )
 
         Spacer(modifier = Modifier.height(4.dp))
 
         // Job Title
-        Text(
-            text = "No job title".also { userProfile.jobTitle = it },
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+//        Text(
+//            text = "No job title".also { userProfile.jobTitle = it },
+//            style = MaterialTheme.typography.titleMedium,
+//            color = MaterialTheme.colorScheme.onSurfaceVariant
+//        )
 
         Spacer(modifier = Modifier.height(4.dp))
 
@@ -162,18 +163,21 @@ fun ProfileHeader(
         Text(
             text = userProfile.location ?: "No location",
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onPrimary
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         // Edit Profile Button
-        Button(
-            onClick = onEditClick,
-            shape = RoundedCornerShape(8.dp)
-        ) {
-            Text("Edit Basic Info")
-        }
+//        Button(
+//            onClick = onEditClick,
+//            shape = RoundedCornerShape(8.dp),
+//            modifier = Modifier
+//                .fillMaxWidth(0.9f)
+//                .height(50.dp)
+//        ) {
+//            Text("Edit Basic Info")
+//        }
     }
 }
 

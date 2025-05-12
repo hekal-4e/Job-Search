@@ -2,10 +2,13 @@ package com.example.jobsearchapp.ui
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -14,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -28,6 +32,7 @@ fun SignUpScreen(navController: NavController, viewModel: AuthViewModel = viewMo
     val authState by viewModel.authState.observeAsState()
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var passwordVisible by remember { mutableStateOf(false) }
     var name by remember { mutableStateOf("") }
     var age by remember { mutableStateOf("") }
     var gender by remember { mutableStateOf("") }
@@ -199,7 +204,18 @@ fun SignUpScreen(navController: NavController, viewModel: AuthViewModel = viewMo
                     onValueChange = { password = it },
                     label = { Text("Password") },
                     modifier = Modifier.fillMaxWidth(),
-                    visualTransformation = PasswordVisualTransformation(),
+                    visualTransformation = if(passwordVisible) VisualTransformation.None
+                    else PasswordVisualTransformation(),
+                    trailingIcon = {
+                        IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                            Icon(
+                                imageVector = if (passwordVisible) Icons.Default.VisibilityOff
+                                else Icons.Default.Visibility,
+                                contentDescription = if (passwordVisible) "Hide password"
+                                else "Show password"
+                            )
+                        }
+                    },
                     isError = passwordError != null,
                     supportingText = {
                         passwordError?.let {
@@ -208,7 +224,7 @@ fun SignUpScreen(navController: NavController, viewModel: AuthViewModel = viewMo
                                 color = MaterialTheme.colorScheme.error
                             )
                         }
-                    }
+                    },
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 // Age field
@@ -292,6 +308,11 @@ fun SignUpScreen(navController: NavController, viewModel: AuthViewModel = viewMo
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp),
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF1E0F5C),
+                    contentColor = Color.White
+                ),
                 enabled = isFormValid
             ) {
                 Text("SIGN UP")
@@ -305,7 +326,9 @@ fun SignUpScreen(navController: NavController, viewModel: AuthViewModel = viewMo
                     .padding(top = 16.dp)
             ) {
                 Text("Already have an account?", color = Color.White)
-                TextButton(onClick = { navController.navigate("login") }) {
+                TextButton(
+                    onClick = { navController.navigate("login") },
+                ) {
                     Text("Sign in", color = Color.LightGray)
                 }
             }

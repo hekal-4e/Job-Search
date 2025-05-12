@@ -307,11 +307,6 @@ class MainActivity : ComponentActivity() {
                                     )
                                 }
 
-
-
-// Inside the NavHost builder, replace the profile-related composables:
-
-                                // Inside your NavHost
                                 // Inside your NavHost
                                 composable("profile") {
                                     val profileViewModel: ProfileViewModel = viewModel()

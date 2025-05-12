@@ -1,5 +1,6 @@
 package com.example.jobsearchapp.ui.profile
 
+import OrangeTheme.Purple80
 import android.Manifest
 import android.content.Intent
 import android.net.Uri
@@ -54,6 +55,10 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.jobsearchapp.UserProfile
 import android.widget.Toast
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.ui.graphics.Color
+import com.example.jobsearchapp.WorkExperience
 import com.example.jobsearchapp.util.ImageUploadHelper
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -229,7 +234,7 @@ fun ProfileScreen(
             item {
                 // Convert UserProfile work experience to UI model
                 val workExperiences = userProfile.workExperience?.map {
-                    com.example.jobsearchapp.WorkExperience(
+                    WorkExperience(
                         id = it.id,
                         company = it.company,
                         startDate = it.startDate,
@@ -242,7 +247,7 @@ fun ProfileScreen(
                     workExperiences = workExperiences,
                     onEditClick = { experienceId ->
                         try {
-                            navController.navigate("edit_work_experience/$experienceId")
+                            navController.navigate("change_work_experience/$experienceId")
                         } catch (e: Exception) {
                             Log.e("ProfileScreen", "Navigation error: ${e.message}")
                             Toast.makeText(context, "This feature is coming soon", Toast.LENGTH_SHORT).show()
@@ -280,7 +285,11 @@ fun ProfileScreen(
                             navController.navigate("edit_education/$educationId")
                         } catch (e: Exception) {
                             Log.e("ProfileScreen", "Navigation error: ${e.message}")
-                            Toast.makeText(context, "This feature is coming soon", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                context,
+                                "This feature is coming soon",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     },
                     onAddClick = {
@@ -288,9 +297,14 @@ fun ProfileScreen(
                             navController.navigate("add_education")
                         } catch (e: Exception) {
                             Log.e("ProfileScreen", "Navigation error: ${e.message}")
-                            Toast.makeText(context, "This feature is coming soon", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                context,
+                                "This feature is coming soon",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
-                    }
+                    },
+                    navController = navController
                 )
             }
 
@@ -625,412 +639,420 @@ fun ProfileHeaderWithPictureChange(
         // Edit Profile Button
         Button(
             onClick = onEditClick,
-            modifier = Modifier.fillMaxWidth(0.7f)
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF1E0F5C),
+                contentColor = Color.White
+            ),
+            shape = RoundedCornerShape(8.dp),
+            modifier = Modifier
+                .fillMaxWidth(0.9f)
+                .height(48.dp)
+                .padding(horizontal = 16.dp)
         ) {
             Text("Edit Basic Info")
         }
     }
 }
 
-@Composable
-fun AboutMeSection(
-    aboutMe: String,
-    onEditClick: () -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "About Me",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold
-                )
-                IconButton(onClick = onEditClick) {
-                    Icon(Icons.Default.Edit, contentDescription = "Edit About Me")
-                }
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                text = aboutMe.ifEmpty { "Add a description about yourself" },
-                style = MaterialTheme.typography.bodyMedium
-            )
-        }
-    }
-}
-
-@Composable
-fun WorkExperienceSection(
-    workExperiences: List<WorkExperience>,
-    onEditClick: (String) -> Unit,
-    onAddClick: () -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Work Experience",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold
-                )
-                IconButton(onClick = onAddClick) {
-                    Icon(Icons.Default.Edit, contentDescription = "Add Work Experience")
-                }
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            if (workExperiences.isEmpty()) {
-                Text(
-                    text = "Add your work experience",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            } else {
-                workExperiences.forEach { experience ->
-                    WorkExperienceItem(
-                        experience = experience,
-                        onEditClick = { onEditClick((experience.id ?: "").toString()) }
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun WorkExperienceItem(
-    experience: WorkExperience,
-    onEditClick: () -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Column(
-            modifier = Modifier.weight(1f)
-        ) {
-            Text(
-                text = experience.jobTitle ?: "",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = experience.company ?: "",
-                style = MaterialTheme.typography.bodyLarge
-            )
-            Text(
-                text = "${experience.startDate ?: ""} - ${experience.endDate ?: "Present"}",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Text(
-                text = experience.description ?: "",
-                style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.padding(top = 4.dp)
-            )
-        }
-        IconButton(onClick = onEditClick) {
-            Icon(Icons.Default.Edit, contentDescription = "Edit")
-        }
-    }
-}
-
-@Composable
-fun EducationSection(
-    educations: List<Education>,
-    onEditClick: (String) -> Unit,
-    onAddClick: () -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Education",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold
-                )
-                IconButton(onClick = onAddClick) {
-                    Icon(Icons.Default.Edit, contentDescription = "Add Education")
-                }
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            if (educations.isEmpty()) {
-                Text(
-                    text = "Add your education",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            } else {
-                educations.forEach { education ->
-                    EducationItem(
-                        education = education,
-                        onEditClick = { onEditClick(education.id ?: "") }
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun EducationItem(
-    education: Education,
-    onEditClick: () -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Column(
-            modifier = Modifier.weight(1f)
-        ) {
-            Text(
-                text = education.degree ?: "",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = education.institution ?: "",
-                style = MaterialTheme.typography.bodyLarge
-            )
-            Text(
-                text = "${education.startDate ?: ""} - ${education.endDate ?: "Present"}",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Text(
-                text = education.description ?: "",
-                style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.padding(top = 4.dp)
-            )
-        }
-        IconButton(onClick = onEditClick) {
-            Icon(Icons.Default.Edit, contentDescription = "Edit")
-        }
-    }
-}
-
-@Composable
-fun SkillsSection(
-    skills: List<String>,
-    onEditClick: () -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Skills",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold
-                )
-                IconButton(onClick = onEditClick) {
-                    Icon(Icons.Default.Edit, contentDescription = "Edit Skills")
-                }
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            if (skills.isEmpty()) {
-                Text(
-                    text = "Add your skills",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            } else {
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    skills.forEach { skill ->
-                        Card(
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text(
-                                text = skill,
-                                style = MaterialTheme.typography.bodyMedium,
-                                modifier = Modifier.padding(12.dp)
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun LanguagesSection(
-    languages: List<String>,
-    onAddClick: () -> Unit,
-    onEditClick: (String) -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Languages",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold
-                )
-                IconButton(onClick = onAddClick) {
-                    Icon(Icons.Default.Edit, contentDescription = "Add Language")
-                }
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            if (languages.isEmpty()) {
-                Text(
-                    text = "Add languages you speak",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            } else {
-                languages.forEach { language ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 4.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = language,
-                            style = MaterialTheme.typography.bodyLarge
-                        )
-                        IconButton(onClick = { onEditClick(language) }) {
-                            Icon(Icons.Default.Edit, contentDescription = "Edit")
-                        }
-                    }
-                    Divider(modifier = Modifier.padding(vertical = 4.dp))
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun AppreciationSection(
-    appreciations: List<Appreciation>,
-    onEditClick: () -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Appreciations",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold
-                )
-                IconButton(onClick = onEditClick) {
-                    Icon(Icons.Default.Edit, contentDescription = "Edit Appreciations")
-                }
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            if (appreciations.isEmpty()) {
-                Text(
-                    text = "Add appreciations you've received",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            } else {
-                appreciations.forEach { appreciation ->
-                    AppreciationItem(appreciation = appreciation)
-                    Spacer(modifier = Modifier.height(8.dp))
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun AppreciationItem(appreciation: Appreciation) {
-    Card(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text(
-                text = appreciation.title ?: "",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = "From: ${appreciation.fromPerson ?: ""}",
-                style = MaterialTheme.typography.bodyMedium
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = appreciation.description ?: "",
-                style = MaterialTheme.typography.bodySmall
-            )
-        }
-    }
-}
-
+//@Composable
+//fun AboutMeSection(
+//    aboutMe: String,
+//    onEditClick: () -> Unit
+//) {
+//    Card(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .padding(horizontal = 16.dp)
+//    ) {
+//        Column(
+//            modifier = Modifier.padding(16.dp)
+//        ) {
+//            Row(
+//                modifier = Modifier.fillMaxWidth(),
+//                horizontalArrangement = Arrangement.SpaceBetween,
+//                verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                Text(
+//                    text = "About Me",
+//                    style = MaterialTheme.typography.titleLarge,
+//                    fontWeight = FontWeight.Bold
+//                )
+//                IconButton(onClick = onEditClick) {
+//                    Icon(Icons.Default.Edit, contentDescription = "Edit About Me")
+//                }
+//            }
+//
+//            Spacer(modifier = Modifier.height(8.dp))
+//
+//            Text(
+//                text = aboutMe.ifEmpty { "Add a description about yourself" },
+//                style = MaterialTheme.typography.bodyMedium
+//            )
+//        }
+//    }
+//}
+//
+//@Composable
+//fun WorkExperienceSection(
+//    workExperiences: List<WorkExperience>,
+//    onEditClick: (String) -> Unit,
+//    onAddClick: () -> Unit
+//) {
+//    Card(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .padding(horizontal = 16.dp)
+//    ) {
+//        Column(
+//            modifier = Modifier.padding(16.dp)
+//        ) {
+//            Row(
+//                modifier = Modifier.fillMaxWidth(),
+//                horizontalArrangement = Arrangement.SpaceBetween,
+//                verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                Text(
+//                    text = "Work Experience",
+//                    style = MaterialTheme.typography.titleLarge,
+//                    fontWeight = FontWeight.Bold
+//                )
+//                IconButton(onClick = onAddClick) {
+//                    Icon(Icons.Default.Edit, contentDescription = "Add Work Experience")
+//                }
+//            }
+//
+//            Spacer(modifier = Modifier.height(8.dp))
+//
+//            if (workExperiences.isEmpty()) {
+//                Text(
+//                    text = "Add your work experience",
+//                    style = MaterialTheme.typography.bodyMedium
+//                )
+//            } else {
+//                workExperiences.forEach { experience ->
+//                    WorkExperienceItem(
+//                        experience = experience,
+//                        onEditClick = { onEditClick((experience.id ?: "").toString()) }
+//                    )
+//                    Spacer(modifier = Modifier.height(8.dp))
+//                }
+//            }
+//        }
+//    }
+//}
+//
+//@Composable
+//fun WorkExperienceItem(
+//    experience: WorkExperience,
+//    onEditClick: () -> Unit
+//) {
+//    Row(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .padding(vertical = 8.dp),
+//        horizontalArrangement = Arrangement.SpaceBetween
+//    ) {
+//        Column(
+//            modifier = Modifier.weight(1f)
+//        ) {
+//            Text(
+//                text = experience.jobTitle ?: "",
+//                style = MaterialTheme.typography.titleMedium,
+//                fontWeight = FontWeight.Bold
+//            )
+//            Text(
+//                text = experience.company ?: "",
+//                style = MaterialTheme.typography.bodyLarge
+//            )
+//            Text(
+//                text = "${experience.startDate ?: ""} - ${experience.endDate ?: "Present"}",
+//                style = MaterialTheme.typography.bodyMedium,
+//                color = MaterialTheme.colorScheme.onSurfaceVariant
+//            )
+//            Text(
+//                text = experience.description ?: "",
+//                style = MaterialTheme.typography.bodySmall,
+//                modifier = Modifier.padding(top = 4.dp)
+//            )
+//        }
+//        IconButton(onClick = onEditClick) {
+//            Icon(Icons.Default.Edit, contentDescription = "Edit")
+//        }
+//    }
+//}
+//
+//@Composable
+//fun EducationSection(
+//    educations: List<Education>,
+//    onEditClick: (String) -> Unit,
+//    onAddClick: () -> Unit
+//) {
+//    Card(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .padding(horizontal = 16.dp)
+//    ) {
+//        Column(
+//            modifier = Modifier.padding(16.dp)
+//        ) {
+//            Row(
+//                modifier = Modifier.fillMaxWidth(),
+//                horizontalArrangement = Arrangement.SpaceBetween,
+//                verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                Text(
+//                    text = "Education",
+//                    style = MaterialTheme.typography.titleLarge,
+//                    fontWeight = FontWeight.Bold
+//                )
+//                IconButton(onClick = onAddClick) {
+//                    Icon(Icons.Default.Edit, contentDescription = "Add Education")
+//                }
+//            }
+//
+//            Spacer(modifier = Modifier.height(8.dp))
+//
+//            if (educations.isEmpty()) {
+//                Text(
+//                    text = "Add your education",
+//                    style = MaterialTheme.typography.bodyMedium
+//                )
+//            } else {
+//                educations.forEach { education ->
+//                    EducationItem(
+//                        education = education,
+//                        onEditClick = { onEditClick(education.id ?: "") }
+//                    )
+//                    Spacer(modifier = Modifier.height(8.dp))
+//                }
+//            }
+//        }
+//    }
+//}
+//
+//@Composable
+//fun EducationItem(
+//    education: Education,
+//    onEditClick: () -> Unit
+//) {
+//    Row(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .padding(vertical = 8.dp),
+//        horizontalArrangement = Arrangement.SpaceBetween
+//    ) {
+//        Column(
+//            modifier = Modifier.weight(1f)
+//        ) {
+//            Text(
+//                text = education.degree ?: "",
+//                style = MaterialTheme.typography.titleMedium,
+//                fontWeight = FontWeight.Bold
+//            )
+//            Text(
+//                text = education.institution ?: "",
+//                style = MaterialTheme.typography.bodyLarge
+//            )
+//            Text(
+//                text = "${education.startDate ?: ""} - ${education.endDate ?: "Present"}",
+//                style = MaterialTheme.typography.bodyMedium,
+//                color = MaterialTheme.colorScheme.onSurfaceVariant
+//            )
+//            Text(
+//                text = education.description ?: "",
+//                style = MaterialTheme.typography.bodySmall,
+//                modifier = Modifier.padding(top = 4.dp)
+//            )
+//        }
+//        IconButton(onClick = onEditClick) {
+//            Icon(Icons.Default.Edit, contentDescription = "Edit")
+//        }
+//    }
+//}
+//
+//@Composable
+//fun SkillsSection(
+//    skills: List<String>,
+//    onEditClick: () -> Unit
+//) {
+//    Card(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .padding(horizontal = 16.dp)
+//    ) {
+//        Column(
+//            modifier = Modifier.padding(16.dp)
+//        ) {
+//            Row(
+//                modifier = Modifier.fillMaxWidth(),
+//                horizontalArrangement = Arrangement.SpaceBetween,
+//                verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                Text(
+//                    text = "Skills",
+//                    style = MaterialTheme.typography.titleLarge,
+//                    fontWeight = FontWeight.Bold
+//                )
+//                IconButton(onClick = onEditClick) {
+//                    Icon(Icons.Default.Edit, contentDescription = "Edit Skills")
+//                }
+//            }
+//
+//            Spacer(modifier = Modifier.height(8.dp))
+//
+//            if (skills.isEmpty()) {
+//                Text(
+//                    text = "Add your skills",
+//                    style = MaterialTheme.typography.bodyMedium
+//                )
+//            } else {
+//                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+//                    skills.forEach { skill ->
+//                        Card(
+//                            modifier = Modifier.fillMaxWidth()
+//                        ) {
+//                            Text(
+//                                text = skill,
+//                                style = MaterialTheme.typography.bodyMedium,
+//                                modifier = Modifier.padding(12.dp)
+//                            )
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
+//
+//@Composable
+//fun LanguagesSection(
+//    languages: List<String>,
+//    onAddClick: () -> Unit,
+//    onEditClick: (String) -> Unit
+//) {
+//    Card(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .padding(horizontal = 16.dp)
+//    ) {
+//        Column(
+//            modifier = Modifier.padding(16.dp)
+//        ) {
+//            Row(
+//                modifier = Modifier.fillMaxWidth(),
+//                horizontalArrangement = Arrangement.SpaceBetween,
+//                verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                Text(
+//                    text = "Languages",
+//                    style = MaterialTheme.typography.titleLarge,
+//                    fontWeight = FontWeight.Bold
+//                )
+//                IconButton(onClick = onAddClick) {
+//                    Icon(Icons.Default.Edit, contentDescription = "Add Language")
+//                }
+//            }
+//
+//            Spacer(modifier = Modifier.height(8.dp))
+//
+//            if (languages.isEmpty()) {
+//                Text(
+//                    text = "Add languages you speak",
+//                    style = MaterialTheme.typography.bodyMedium
+//                )
+//            } else {
+//                languages.forEach { language ->
+//                    Row(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .padding(vertical = 4.dp),
+//                        horizontalArrangement = Arrangement.SpaceBetween,
+//                        verticalAlignment = Alignment.CenterVertically
+//                    ) {
+//                        Text(
+//                            text = language,
+//                            style = MaterialTheme.typography.bodyLarge
+//                        )
+//                        IconButton(onClick = { onEditClick(language) }) {
+//                            Icon(Icons.Default.Edit, contentDescription = "Edit")
+//                        }
+//                    }
+//                    Divider(modifier = Modifier.padding(vertical = 4.dp))
+//                }
+//            }
+//        }
+//    }
+//}
+//
+//@Composable
+//fun AppreciationSection(
+//    appreciations: List<Appreciation>,
+//    onEditClick: () -> Unit
+//) {
+//    Card(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .padding(horizontal = 16.dp)
+//    ) {
+//        Column(
+//            modifier = Modifier.padding(16.dp)
+//        ) {
+//            Row(
+//                modifier = Modifier.fillMaxWidth(),
+//                horizontalArrangement = Arrangement.SpaceBetween,
+//                verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                Text(
+//                    text = "Appreciations",
+//                    style = MaterialTheme.typography.titleLarge,
+//                    fontWeight = FontWeight.Bold
+//                )
+//                IconButton(onClick = onEditClick) {
+//                    Icon(Icons.Default.Edit, contentDescription = "Edit Appreciations")
+//                }
+//            }
+//
+//            Spacer(modifier = Modifier.height(8.dp))
+//
+//            if (appreciations.isEmpty()) {
+//                Text(
+//                    text = "Add appreciations you've received",
+//                    style = MaterialTheme.typography.bodyMedium
+//                )
+//            } else {
+//                appreciations.forEach { appreciation ->
+//                    AppreciationItem(appreciation = appreciation)
+//                    Spacer(modifier = Modifier.height(8.dp))
+//                }
+//            }
+//        }
+//    }
+//}
+//
+//@Composable
+//fun AppreciationItem(appreciation: Appreciation) {
+//    Card(
+//        modifier = Modifier.fillMaxWidth()
+//    ) {
+//        Column(
+//            modifier = Modifier.padding(16.dp)
+//        ) {
+//            Text(
+//                text = appreciation.title ?: "",
+//                style = MaterialTheme.typography.titleMedium,
+//                fontWeight = FontWeight.Bold
+//            )
+//            Spacer(modifier = Modifier.height(4.dp))
+//            Text(
+//                text = "From: ${appreciation.fromPerson ?: ""}",
+//                style = MaterialTheme.typography.bodyMedium
+//            )
+//            Spacer(modifier = Modifier.height(4.dp))
+//            Text(
+//                text = appreciation.description ?: "",
+//                style = MaterialTheme.typography.bodySmall
+//            )
+//        }
+//    }
+//}
+//

@@ -119,8 +119,13 @@ fun WelcomePage1(onNext: () -> Unit) {
         Spacer(modifier = Modifier.height(32.dp))
         Button(
             onClick = onNext,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF1E0F5C),
+                contentColor = Color.White
+            ),
+            shape = RoundedCornerShape(8.dp),
             modifier = Modifier
-                .fillMaxWidth(0.7f)
+                .fillMaxWidth(0.9f)
                 .height(50.dp)
         ) {
             Text("Next")
@@ -155,8 +160,13 @@ fun WelcomePage2(onNext: () -> Unit) {
         Spacer(modifier = Modifier.height(32.dp))
         Button(
             onClick = onNext,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF1E0F5C),
+                contentColor = Color.White
+            ),
+            shape = RoundedCornerShape(8.dp),
             modifier = Modifier
-                .fillMaxWidth(0.7f)
+                .fillMaxWidth(0.9f)
                 .height(50.dp)
         ) {
             Text("Next")
@@ -191,8 +201,13 @@ fun WelcomePage3(onNext: () -> Unit) {
         Spacer(modifier = Modifier.height(32.dp))
         Button(
             onClick = onNext,
+            shape = RoundedCornerShape(8.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF1E0F5C),
+                contentColor = Color.White
+            ),
             modifier = Modifier
-                .fillMaxWidth(0.7f)
+                .fillMaxWidth(0.9f)
                 .height(50.dp)
         ) {
             Text("Get Started")

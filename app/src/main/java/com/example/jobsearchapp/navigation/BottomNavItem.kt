@@ -25,7 +25,7 @@ sealed class BottomNavItem(
     )
 
     data object Profile : BottomNavItem(
-        route = "profile",
+        route = "Profile",
         title = "Profile",
         icon = Icons.Default.Person
     )

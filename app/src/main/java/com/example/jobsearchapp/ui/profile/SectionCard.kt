@@ -23,10 +23,10 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material.icons.filled.Work
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -36,10 +36,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.jobsearchapp.Education
 import com.example.jobsearchapp.WorkExperience
 
 @Composable
@@ -105,10 +105,10 @@ fun SectionCard(
                     )
                 }
             }
-            Divider(
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f),
+            HorizontalDivider(
+                modifier = Modifier.padding(top = 16.dp, bottom = 8.dp),
                 thickness = 1.dp,
-                modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
             )
             Spacer(modifier = Modifier.height(32.dp))
             content()
@@ -129,11 +129,13 @@ fun AboutMeSection(
         modifier = modifier,
         content = {
             if (aboutMe != null && aboutMe.isNotEmpty()) {
-                Text(
-                    text = aboutMe,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
+                Column(modifier = Modifier.padding(vertical = 8.dp)) {
+                    Text(
+                        text = aboutMe,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
             } else {
                 Text(
                     text = "Add your bio here...",
@@ -191,7 +193,7 @@ fun WorkExperienceItem(experience: WorkExperience) {
 
 @Composable
 fun EducationSection(
-    educations: List<com.example.jobsearchapp.Education>,
+    educations: List<com.example.jobsearchapp.ui.profile.Education>,
     onEditClick: (Int) -> Unit,
     onAddClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -227,14 +229,14 @@ fun EducationSection(
 }
 
 @Composable
-fun EducationItem(education: Education) {
+fun EducationItem(education: com.example.jobsearchapp.ui.profile.Education) {
     Column(modifier = Modifier.padding(vertical = 8.dp)) {
         Text(
-            text = education.degree,
+            text = education.degree.toString(),
             style = MaterialTheme.typography.titleSmall
         )
         Text(
-            text = "${education.institution}, ${education.degree} - ${education.graduationDate}",
+            text = "${education.institution}, ${education.degree} - ${education.endDate}",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
         )
@@ -286,8 +288,7 @@ fun SkillChip(skill: String) {
         modifier = Modifier.padding(end = 4.dp, bottom = 4.dp),
         shape = RoundedCornerShape(8.dp),
         colors = SuggestionChipDefaults.suggestionChipColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            labelColor = MaterialTheme.colorScheme.onPrimaryContainer
+            containerColor = Color(0xFF1E0F5C),
         )
     )
 }
@@ -305,8 +306,7 @@ fun LanguageChip(
         modifier = Modifier.padding(end = 4.dp, bottom = 4.dp),
         shape = RoundedCornerShape(8.dp),
         colors = FilterChipDefaults.filterChipColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer,
-            labelColor = MaterialTheme.colorScheme.onSecondaryContainer
+            containerColor = Color(0xFF1E0F5C),
         )
     )
 }
@@ -351,7 +351,7 @@ fun LanguagesSection(
 
 @Composable
 fun AppreciationSection(
-    appreciations: List<String>,
+    appreciations: List<Appreciation>,
     onEditClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -363,11 +363,11 @@ fun AppreciationSection(
         content = {
             if (appreciations.isNotEmpty()) {
                 appreciations.forEach { appreciation ->
-                    Text(
-                        text = appreciation,
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(vertical = 8.dp)
-                    )
+//                    Text(
+//                        text = appreciation,
+//                        style = MaterialTheme.typography.bodyMedium,
+//                        modifier = Modifier.padding(vertical = 8.dp)
+//                    )
                 }
             } else {
                 Text(

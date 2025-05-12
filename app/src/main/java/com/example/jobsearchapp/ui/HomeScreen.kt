@@ -99,7 +99,7 @@ fun HomeScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("J0bVerse") },
+                title = { Text("JobVerse") },
                 actions = {
                     IconButton(
                         onClick = {
