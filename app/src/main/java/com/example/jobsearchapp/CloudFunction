@@ -1,0 +1,64 @@
+const functions = require('firebase-functions');
+const admin = require('firebase-admin');
+const nodemailer = require('nodemailer');
+
+admin.initializeApp();
+
+// Configure the email transporter
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: functions.config().email.user,
+    pass: functions.config().email.password
+  }
+});
+
+exports.sendApplicationStatusEmail = functions.https.onCall(async (data, context) => {
+  // Verify authentication
+  if (!context.auth) {
+    throw new functions.https.HttpsError('unauthenticated', 'User must be authenticated');
+  }
+
+  const { recipientEmail, subject, message, jobTitle, status } = data;
+
+  if (!recipientEmail || !subject || !message) {
+    throw new functions.https.HttpsError('invalid-argument', 'Missing required fields');
+  }
+
+  // Create HTML content for the email
+  let statusColor = '#4285F4'; // Default blue
+  if (status === 'ACCEPTED') {
+    statusColor = '#34A853'; // Green
+  } else if (status === 'REJECTED') {
+    statusColor = '#EA4335'; // Red
+  } else if (status === 'INTERVIEWING') {
+    statusColor = '#FBBC05'; // Yellow
+  }
+
+  const htmlContent = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 5px;">
+      <h2 style="color: #333;">${subject}</h2>
+      <p style="font-size: 16px; line-height: 1.5; color: #555;">${message}</p>
+      <div style="margin: 20px 0; padding: 15px; background-color: ${statusColor}; color: white; border-radius: 4px; text-align: center;">
+        <strong>Status: ${status}</strong>
+      </div>
+      <p style="font-size: 14px; color: #777;">This is an automated message. Please do not reply to this email.</p>
+    </div>
+  `;
+
+  // Email options
+  const mailOptions = {
+    from: '"Job Search App" <noreply@jobsearchapp.com>',
+    to: recipientEmail,
+    subject: subject,
+    html: htmlContent
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    return { success: true };
+  } catch (error) {
+    console.error('Error sending email:', error);
+    throw new functions.https.HttpsError('internal', 'Error sending email');
+  }
+});

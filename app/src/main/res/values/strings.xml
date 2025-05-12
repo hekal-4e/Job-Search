@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Job Search App</string>
+    <string name="search_jobs_hint">Search jobs…</string>
+    <string name="filter_jobs_title">Filter Jobs</string>
+    <string name="filter_options_placeholder">Filter options coming soon…</string>
+    <string name="apply_button">Apply</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="search_icon_description">Search</string>
+    <string name="filter_icon_description">Filter</string>
+    <string name="profile_image_description">Profile Image</string>
+    <string name="theme_switch_description">Switch Theme</string>
+    <string name="notifications_description">Notifications</string>
+    <string name="job_details_title">Job Details</string>
+    <string name="back_button_description">Go back</string>
+    <string name="apply_now_button">Apply Now</string>
+    <string name="job_not_found_error">Job not found</string>
+    <string name="featured_jobs">Featured Jobs</string>
+    <string name="home_tab">Home</string>
+    <string name="search_tab">Search</string>
+    <string name="saved_tab">Saved</string>
+    <string name="profile_tab">Profile</string>
+</resources>
