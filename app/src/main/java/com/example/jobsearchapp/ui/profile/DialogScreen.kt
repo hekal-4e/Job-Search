@@ -110,7 +110,7 @@ fun LogoutBottomSheet(
 @Composable
 fun UpdatePasswordBottomSheet(
     onDismissRequest: () -> Unit,
-    onConfirmed: () -> Unit
+    onUpdatePasswordConfirmed: () -> Unit
 ) {
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
@@ -141,7 +141,7 @@ fun UpdatePasswordBottomSheet(
             )
             Button(
                 onClick = {
-                    onConfirmed()
+                    onUpdatePasswordConfirmed()
                     onDismissRequest()
                 },
                 colors = ButtonDefaults.buttonColors(

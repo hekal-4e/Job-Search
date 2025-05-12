@@ -28,8 +28,8 @@ fun LoginScreen(navController: NavController, viewModel: AuthViewModel = viewMod
     val authState by viewModel.authState.observeAsState()
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var passwordVisible by remember { mutableStateOf(false) }
-
+    var passwordVisible by remember { mutableStateOf(false) } // New state for visibility toggle
+    val authViewModel: AuthViewModel = viewModel()
     BackgroundContainer {
         Column(
             modifier = Modifier
